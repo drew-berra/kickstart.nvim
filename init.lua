@@ -163,9 +163,6 @@ vim.opt.colorcolumn = '120'
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
--- Set a keymap to quickly go into the file tree
-vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
-
 -- Set a keymap to allow movement up and down of highlighted lines
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
@@ -229,6 +226,10 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Launch Oil
+vim.keymap.set('n', '<leader>pv', '<cmd>Oil<CR>')
+vim.keymap.set('n', '<leader>-', '<cmd>Oil --float<CR>')
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -786,13 +787,13 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    'rose-pine/neovim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      -- any other, such as 'rose-pine-main', 'rose-pine-moon', or 'rose-pine-moon'.
+      vim.cmd.colorscheme 'rose-pine-moon'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
@@ -905,6 +906,19 @@ require('lazy').setup({
       -- Add a nice keymap to easily see undo history for the current file
       vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
     end,
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    --Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+  {
+    'nvim-neorg/neorg',
+    dependencies = { 'vhyrro/luarocks.nvim' },
+    lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    version = '*', -- Pin Neorg to the latest stable release
+    config = true,
   },
 }, {
   ui = {
