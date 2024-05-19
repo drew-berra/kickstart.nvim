@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -160,6 +160,10 @@ vim.opt.linebreak = true
 -- Add in a color column to easily identify how long a line is
 vim.opt.colorcolumn = '120'
 
+-- Set default tab spacing to 4 instead of 8
+vim.opt.ts = 4
+vim.opt.sw = 4
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -226,10 +230,6 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
--- Launch Oil
-vim.keymap.set('n', '<leader>pv', '<cmd>Oil<CR>')
-vim.keymap.set('n', '<leader>-', '<cmd>Oil --float<CR>')
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -582,6 +582,7 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         gopls = {},
+        smithy_ls = {},
         pyright = {},
         rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -844,7 +845,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'javascript', 'typescript', 'rust' },
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'javascript', 'typescript', 'rust', 'smithy' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -912,6 +913,19 @@ require('lazy').setup({
     opts = {},
     --Optional dependencies
     dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('oil').setup {
+        columns = { 'icon' },
+        view_options = {
+          show_hidden = true,
+        },
+      }
+
+      -- Launch Oil in parent directory
+      vim.keymap.set('n', '<leader>pv', '<cmd>Oil<CR>')
+      -- Launch Oil in a floating window in the parent directory
+      vim.keymap.set('n', '<leader>-', '<cmd>Oil --float<CR>')
+    end,
   },
   {
     'nvim-neorg/neorg',
